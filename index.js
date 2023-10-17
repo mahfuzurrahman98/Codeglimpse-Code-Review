@@ -64,13 +64,10 @@ app.post('/api/chat', async (req, res) => {
     };
 
     const request = https.request(options, (response) => {
-      // res.setHeader('Content-Type', 'text/plain');
       let count = 0;
       let finalString = '';
       try {
         response.on('data', (chunk) => {
-          // convert Buffer to string
-
           let chunkString = chunk.toString();
           chunkString = chunkString.trim();
 
@@ -85,8 +82,6 @@ app.post('/api/chat', async (req, res) => {
             return;
           }
 
-          // console.log('chunkString_' + ++count + ': ');
-
           let _cnt = 0;
           let chunkStringArray = chunkString.split('\n\n');
           chunkStringArray.forEach((chunkString) => {
@@ -100,19 +95,12 @@ app.post('/api/chat', async (req, res) => {
               res.write(curString);
               finalString += curString;
             }
-
-            // console.log('JSON_' + ++_cnt + ': ' + curString);
           });
-
-          // console.log('\n--------------------------------\n\n');
-
-          // process.exit(0);
         });
       } catch (error) {
         console.error('The error is: ' + error);
       }
       response.on('end', () => {
-        console.log('finalString: ' + finalString);
         res.end();
       });
     });
@@ -135,8 +123,8 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-// app.listen(4000, () => {
-//   console.log('Server is listening on port 4000');
+// app.listen(3000, () => {
+//   console.log('Server is listening on port 3000');
 // });
 
 const server = app.listen(process.env.PORT || 3000);
