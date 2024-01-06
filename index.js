@@ -85,15 +85,19 @@ app.post('/api/chat', async (req, res) => {
           let _cnt = 0;
           let chunkStringArray = chunkString.split('\n\n');
           chunkStringArray.forEach((chunkString) => {
-            let json = JSON.parse(chunkString);
-            let choice = json.choices[0];
+            try {
+              let json = JSON.parse(chunkString);
+              let choice = json.choices[0];
 
-            let curString = '';
-            if (choice.delta && choice.delta.hasOwnProperty('content')) {
-              curString = choice.delta.content;
+              let curString = '';
+              if (choice.delta && choice.delta.hasOwnProperty('content')) {
+                curString = choice.delta.content;
 
-              res.write(curString);
-              finalString += curString;
+                res.write(curString);
+                finalString += curString;
+              }
+            } catch (error) {
+              console.error('The error is: ' + error);
             }
           });
         });
